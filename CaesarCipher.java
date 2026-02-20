@@ -24,6 +24,14 @@ public class CaesarCipher {
     }
 
     public CaesarCipher(int num){
+        alphabet = new char[26];
+        String alpha = "abcdefghijklmnopqrstuvwxyz";
+        for(int i = 0; i < alphabet.length; i++)
+        {
+            alphabet[i] = alpha.charAt(i);
+            //System.out.println(alpha.charAt(i));
+        }   
+        shift = num;
         shifter(num);
     }
 
@@ -31,54 +39,57 @@ public class CaesarCipher {
         String encryptedmessage = "";
         for(int i = 0; i < message.length(); i++)
         {
+            int index = -1;
             for(int x = 0; x < 26; x++)
             {
-                char shiftedchar = 'a';
-                boolean inIt = false;
-                if(message.charAt(i) == shifted[x])
+                if(message.charAt(i) == alphabet[x])
                 {
-                    inIt = true;
+                    index = x;
                 }
-                if(inIt == true)
-                {
-                    shiftedchar = shifted[x + 4];
-                    encryptedmessage += shiftedchar;
-                }
-                else
-                {
-                    encryptedmessage += " ";
-                }
+                
+            }
+            if(index == -1)
+            {
+                encryptedmessage += message.charAt(i);
+            }
+            else
+            {
+                encryptedmessage += shifted[index];
             }
         }
         return encryptedmessage;
     }
 
     public String decrypt(String message){
-        return "";
-    }
-
-    public void shifter(int num){
-        alphabet = new char[26];
-        String alpha = "abcdefghijklmnopqrstuvwxyz";
-        for(int i = 0; i < 26; i++)
+        String decryptedmessage = "";
+        for(int i = 0; i < message.length(); i++)
         {
-            alphabet[i] = alpha.charAt(i);
-            //System.out.println(alpha.charAt(i));
-        }   
-
-        shifted = new char[26];
-        for(int i = 0; i < 26; i++)
-        {
-            if((i + num) % 26 >= num)
+            int index = -1;
+            for(int x = 0; x < 26; x++)
             {
-                shifted[i + num] = alphabet[i];
+                if(message.charAt(i) == shifted[x])
+                {
+                    index = x;
+                }
+                
+            }
+            if(index == -1)
+            {
+                decryptedmessage += message.charAt(i);
             }
             else
             {
-                shifted[(i + num) % 26] = alphabet[i];
+                decryptedmessage += alphabet[index];
             }
         }
-        System.out.println(shifted);
+        return decryptedmessage;
+        
+    }
+
+    public void shifter(int num){
+        shifted = new char[26];
+        for(int i = 0; i < 26; i++)
+        shifted[i] = alphabet[(i + num) % 26];
     }
 
 
